@@ -28,13 +28,6 @@ public class RuleServiceImpl implements RuleService {
     return ruleRepository.findAll();
   }
 
-
-
-  @Override
-  public Optional<Rule> create(Rule rule) {
-    return null;
-  }
-
   @Override
   public void save(Rule rule) {
     ruleRepository.save(rule);

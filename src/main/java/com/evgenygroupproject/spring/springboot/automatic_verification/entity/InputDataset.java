@@ -29,5 +29,5 @@ public class InputDataset {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "rule_id")
-  private Rule inputRule;
+  private Rule rule;
 }

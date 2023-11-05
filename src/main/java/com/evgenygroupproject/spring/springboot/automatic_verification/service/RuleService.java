@@ -13,8 +13,6 @@ public interface RuleService {
 
   List<Rule> getAll();
 
-  Optional<Rule> create(Rule rule);
-
   void save(Rule rule);
 
 }

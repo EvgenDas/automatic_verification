@@ -3,6 +3,7 @@ package com.evgenygroupproject.spring.springboot.automatic_verification.controll
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.InputDataset;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.OutputDataset;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.Rule;
+import com.evgenygroupproject.spring.springboot.automatic_verification.service.InputDatasetService;
 import com.evgenygroupproject.spring.springboot.automatic_verification.service.RuleService;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
@@ -34,6 +35,8 @@ public class RuleController {
   private RuleService ruleService;
   @Autowired
   private MinioClient minioClient;
+  @Autowired
+  private InputDatasetService inputDatasetService;
 
   @GetMapping("/{id}")
   public String getById(@PathVariable int id, Model model) {
@@ -67,6 +70,12 @@ public class RuleController {
     rule.setInputDatasetList(list);
     rule.setOutputDataset(outputDataset);
     ruleService.save(rule);
+    inputDataset.setRule(rule);
+    inputDatasetService.save(inputDataset);
+
+
+
+
 
     createBucket();
 

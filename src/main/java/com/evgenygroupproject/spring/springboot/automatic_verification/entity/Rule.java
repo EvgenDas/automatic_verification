@@ -34,12 +34,14 @@ public class Rule {
 //  @Length(max = 255, message = "name length must be smaller than 255 symbols")
   private String name;
 
-  @OneToMany(mappedBy = "inputRule", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL)
   private List<InputDataset> inputDatasetList;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "output_datasets_id")
   private OutputDataset outputDataset;
 
+  @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL)
+  private List<Jar> jars;
 
 }

@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,13 @@ public class Jar {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "rule_id")
-  private int rule_id;
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "rule_id")
+  private Rule rule;
+
+  public Jar(String name, Rule rule) {
+    this.name = name;
+    this.rule = rule;
+  }
+
 }

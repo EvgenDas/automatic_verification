@@ -46,13 +46,13 @@ public class JarController {
       @RequestParam("rule_id") int ruleId) throws IOException {
 
     createBucket();
-    Jar jar = new Jar();
-    jar.setName(jarFile.getOriginalFilename());
-    jar.setRule_id(ruleId);
-
+    Jar jar = new Jar(jarFile.getOriginalFilename(), ruleService.getById(ruleId).get());
     jarService.save(jar);
 
     saveFile(jarFile.getInputStream(), jar.getName());
+
+    jarService.process(jar);
+
 
     return "process";
   }
