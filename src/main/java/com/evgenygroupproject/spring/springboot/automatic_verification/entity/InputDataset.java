@@ -10,9 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-
+@RequiredArgsConstructor
 @Entity
 @Table(name = "input_datasets")
 public class InputDataset {
@@ -24,10 +25,11 @@ public class InputDataset {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "file")
-  private String file;
-
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "rule_id")
   private Rule rule;
+
+  public InputDataset(String name) {
+    this.name = name;
+  }
 }

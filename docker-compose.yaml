@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: automatic_verification
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:3036/my_db?useSSL=false&amp;serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=bestuser
+      - SPRING_DATASOURCE_PASSWORD=bestuser
+    ports:
+     - '8091:8091'
+  db:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=bestuser
+      - POSTGRES_PASSWORD=bestuser
+      - POSTGRES_DB=my_db
+#    volumes:
+#      - ./src/main/resources/db-init:/docker-entrypoint-initdb.d

@@ -9,5 +9,4 @@ public class AutomaticVerificationApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AutomaticVerificationApplication.class, args);
 	}
-
 }

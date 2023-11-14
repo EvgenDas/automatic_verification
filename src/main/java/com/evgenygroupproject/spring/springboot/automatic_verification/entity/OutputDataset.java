@@ -9,9 +9,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 
 @Data
+@RequiredArgsConstructor
 @Entity
 @Table(name = "output_datasets")
 public class OutputDataset {
@@ -23,10 +25,10 @@ public class OutputDataset {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "file")
-  private String file;
-
   @OneToOne(mappedBy = "outputDataset", cascade = CascadeType.ALL)
   private Rule outputRule;
 
+  public OutputDataset(String name) {
+    this.name = name;
+  }
 }
