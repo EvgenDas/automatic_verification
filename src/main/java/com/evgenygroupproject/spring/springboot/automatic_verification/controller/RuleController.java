@@ -90,6 +90,7 @@ public class RuleController {
     if (!found) {
       minioClient.makeBucket(MakeBucketArgs
           .builder()
+          .bucket("cvs-files")
           .build());
     }
   }
@@ -103,5 +104,4 @@ public class RuleController {
         .stream(inputStream, inputStream.available(), -1)
         .build());
   }
-
 }

@@ -1,0 +1,51 @@
+version: '3'
+
+volumes:
+  cache:
+    driver: local
+  db-data:
+    driver: local
+  minio-data:
+    driver: local
+
+services:
+
+  PostgreSQL:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=bestuser
+      - POSTGRES_PASSWORD=bestuser
+      - POSTGRES_DB=my_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    command: server ~/minio --console-address :9090
+    ports:
+      - '9090:9090'
+      - '9000:9000'
+    volumes:
+      - minio-data:/minio
+
+
+  API:
+    image: 'automatic_verification-api-docker.jar'
+    ports:
+      - '8092:8092'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/my_db
+      - SPRING_DATASOURCE_USERNAME=bestuser
+      - SPRING_DATASOURCE_PASSWORD=bestuser
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgresPlusDialect
+    depends_on:
+      - PostgreSQL
+      - minio

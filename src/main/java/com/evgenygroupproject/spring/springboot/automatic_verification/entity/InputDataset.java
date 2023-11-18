@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -32,4 +33,23 @@ public class InputDataset {
   public InputDataset(String name) {
     this.name = name;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    InputDataset that = (InputDataset) o;
+    return id == that.id && Objects.equals(name, that.name) && Objects.equals(
+        rule, that.rule);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, rule);
+  }
 }
+
