@@ -3,7 +3,6 @@ package com.evgenygroupproject.spring.springboot.automatic_verification.controll
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.InputDataset;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.OutputDataset;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.Rule;
-import com.evgenygroupproject.spring.springboot.automatic_verification.service.InputDatasetService;
 import com.evgenygroupproject.spring.springboot.automatic_verification.service.RuleService;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
@@ -11,8 +10,8 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +34,15 @@ public class RuleController {
   private RuleService ruleService;
   @Autowired
   private MinioClient minioClient;
-  @Autowired
-  private InputDatasetService inputDatasetService;
 
   @GetMapping("/{id}")
   public String getById(@PathVariable int id, Model model) {
-    Rule rule = ruleService.getById(id).get();
-    model.addAttribute("rule", rule);
-    return "rule";
+    Optional<Rule> rule = ruleService.getById(id);
+    if (rule.isPresent()) {
+      model.addAttribute("rule", rule.get());
+      return "rule";
+    }
+    throw new IllegalArgumentException("Такого правила не нашлось");
   }
 
   @GetMapping
@@ -54,32 +54,27 @@ public class RuleController {
 
   @PostMapping
   public String addRule(@RequestParam String name,
-      @RequestParam("input_file") MultipartFile inputFile,
+      @RequestParam("input_file") List<MultipartFile> inputFiles,
       @RequestParam("output_file") MultipartFile outputFile) throws IOException {
 
-    InputDataset inputDataset = new InputDataset();
-    inputDataset.setName(inputFile.getOriginalFilename());
-    List<InputDataset> list = new ArrayList<>();
-    list.add(inputDataset);
+    List<InputDataset> inputDatasets = inputFiles.stream()
+        .map(el -> new InputDataset(el.getOriginalFilename()))
+        .toList();
 
-    OutputDataset outputDataset = new OutputDataset();
-    outputDataset.setName(outputFile.getOriginalFilename());
+    OutputDataset outputDataset = new OutputDataset(outputFile.getOriginalFilename());
+    Rule rule = new Rule(name, inputDatasets, outputDataset);
+    inputDatasets.forEach(el -> el.setRule(rule));
 
-    Rule rule = new Rule();
-    rule.setName(name);
-    rule.setInputDatasetList(list);
-    rule.setOutputDataset(outputDataset);
     ruleService.save(rule);
-    inputDataset.setRule(rule);
-    inputDatasetService.save(inputDataset);
-
-
-
-
 
     createBucket();
-
-    saveFile(inputFile.getInputStream(), inputFile.getOriginalFilename());
+    inputFiles.forEach(el -> {
+      try {
+        saveFile(el.getInputStream(), el.getOriginalFilename());
+      } catch (IOException e) {
+        throw new IllegalArgumentException("Добавление входных датасетов " + e);
+      }
+    });
     saveFile(outputFile.getInputStream(), outputFile.getOriginalFilename());
 
     return "redirect:/api/rule";
@@ -95,6 +90,7 @@ public class RuleController {
     if (!found) {
       minioClient.makeBucket(MakeBucketArgs
           .builder()
+          .bucket("cvs-files")
           .build());
     }
   }
@@ -108,5 +104,4 @@ public class RuleController {
         .stream(inputStream, inputStream.available(), -1)
         .build());
   }
-
 }

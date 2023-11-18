@@ -4,6 +4,7 @@ import com.evgenygroupproject.spring.springboot.automatic_verification.entity.In
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+@Deprecated
 @Repository
 public interface InputDatasetRepository extends JpaRepository<InputDataset, Integer> {
 

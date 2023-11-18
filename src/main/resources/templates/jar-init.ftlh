@@ -4,7 +4,7 @@
 
     <form method="post" enctype="multipart/form-data">
       <label>
-        <input type="file" name="jar_file">
+        <input type="file" name="jar_file" accept=".jar">
         <div>List of rules</div>
               <#list rules as rule>
                 <div>

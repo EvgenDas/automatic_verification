@@ -4,8 +4,8 @@
     <form method="post" enctype="multipart/form-data">
       <label>
         <input type="text" name="name" placeholder="Add rule">
-        <input type="file" name="input_file">
-        <input type="file" name="output_file">
+        <input type="file" name="input_file" multiple accept=".csv">
+        <input type="file" name="output_file" accept=".csv">
       </label>
       <button type="submit">Add</button>
     </form>

@@ -44,4 +44,9 @@ public class Rule {
   @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL)
   private List<Jar> jars;
 
+  public Rule(String name, List<InputDataset> inputDatasetList, OutputDataset outputDataset) {
+    this.name = name;
+    this.inputDatasetList = inputDatasetList;
+    this.outputDataset = outputDataset;
+  }
 }
