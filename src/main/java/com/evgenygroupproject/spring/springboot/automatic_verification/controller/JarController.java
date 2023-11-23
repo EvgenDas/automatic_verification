@@ -2,6 +2,7 @@ package com.evgenygroupproject.spring.springboot.automatic_verification.controll
 
 import com.evgenygroupproject.spring.springboot.automatic_verification.config.MinioConfig;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.Jar;
+import com.evgenygroupproject.spring.springboot.automatic_verification.entity.ResultVerification;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.Rule;
 import com.evgenygroupproject.spring.springboot.automatic_verification.service.JarService;
 import com.evgenygroupproject.spring.springboot.automatic_verification.service.RuleService;
@@ -43,15 +44,22 @@ public class JarController {
 
   @PostMapping
   public String processJar(@RequestParam("jar_file") MultipartFile jarFile,
-      @RequestParam("rule_id") int ruleId) throws IOException {
+      @RequestParam("rule_id") int ruleId, Model model) throws IOException {
 
     createBucket();
-    Jar jar = new Jar(jarFile.getOriginalFilename(), ruleService.getById(ruleId).get());
+    Jar jar = new Jar(java.util.UUID.randomUUID() + jarFile.getOriginalFilename(), ruleService.getById(ruleId).get());
     jarService.save(jar);
 
     saveFile(jarFile.getInputStream(), jar.getName());
 
-    jarService.process(jar);
+
+    ResultVerification resultVerification = jarService.process(jar);
+    String result;
+    model.addAttribute("expected", resultVerification.getExpected());
+    model.addAttribute("actual", resultVerification.getActual());
+    result = resultVerification.isResult() ? "Правильное выполнение" : "Неправильное выполнение";
+    model.addAttribute("result", result);
+
 
 
     return "process";
