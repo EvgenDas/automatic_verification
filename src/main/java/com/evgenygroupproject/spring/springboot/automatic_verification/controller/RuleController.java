@@ -58,24 +58,20 @@ public class RuleController {
       @RequestParam("output_file") MultipartFile outputFile) throws IOException {
 
     List<InputDataset> inputDatasets = inputFiles.stream()
-        .map(el -> new InputDataset(el.getOriginalFilename()))
+        .map(el -> new InputDataset(java.util.UUID.randomUUID() + el.getOriginalFilename()))
         .toList();
 
-    OutputDataset outputDataset = new OutputDataset(outputFile.getOriginalFilename());
+    OutputDataset outputDataset = new OutputDataset(java.util.UUID.randomUUID() + outputFile.getOriginalFilename());
     Rule rule = new Rule(name, inputDatasets, outputDataset);
     inputDatasets.forEach(el -> el.setRule(rule));
 
     ruleService.save(rule);
 
     createBucket();
-    inputFiles.forEach(el -> {
-      try {
-        saveFile(el.getInputStream(), el.getOriginalFilename());
-      } catch (IOException e) {
-        throw new IllegalArgumentException("Добавление входных датасетов " + e);
-      }
-    });
-    saveFile(outputFile.getInputStream(), outputFile.getOriginalFilename());
+    for(int i = 0; i < inputFiles.size(); i++) {
+      saveFile(inputFiles.get(i).getInputStream(), inputDatasets.get(i).getName());
+    }
+    saveFile(outputFile.getInputStream(), outputDataset.getName());
 
     return "redirect:/api/rule";
   }
