@@ -31,7 +31,7 @@ services:
     command: server ~/minio --console-address :9090
     ports:
       - '9090:9090'
-      - '9000:9000'
+      - '9009:9009'
     volumes:
       - minio-data:/minio
 

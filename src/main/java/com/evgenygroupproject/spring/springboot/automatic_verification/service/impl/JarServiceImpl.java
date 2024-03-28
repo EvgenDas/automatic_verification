@@ -3,15 +3,19 @@ package com.evgenygroupproject.spring.springboot.automatic_verification.service.
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.InputDataset;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.Jar;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.OutputDataset;
+import com.evgenygroupproject.spring.springboot.automatic_verification.entity.ResultVerification;
 import com.evgenygroupproject.spring.springboot.automatic_verification.repository.JarRepository;
 import com.evgenygroupproject.spring.springboot.automatic_verification.service.JarService;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,32 +36,70 @@ public class JarServiceImpl implements JarService {
 
   @SneakyThrows
   @Override
-  public void process(Jar jar) {
+  public ResultVerification process(Jar jar) {
     File directory = new File("src/main/resources/temporary_file");
 
     File outputFile = File.createTempFile("jar_write", ".csv", directory);
 
-    File jarFile = File.createTempFile(jar.getName(), ".jar", directory);
+    File jarFile = File.createTempFile("jarFile", ".jar", directory);
     writeFile(jarFile, jar.getName(), "jar-files");
 
     List<File> listOfInputFile = new ArrayList<>();
     for (InputDataset dataset : jar.getRule().getInputDatasetList()) {
-      File file = File.createTempFile(dataset.getName(), ".csv", directory);
+      File file = File.createTempFile("reader", ".csv", directory);
       writeFile(file, dataset.getName(), "cvs-files");
       listOfInputFile.add(file);
     }
 
     OutputDataset outputDataset = jar.getRule().getOutputDataset();
-    File outputDatasetFile = File.createTempFile(outputDataset.getName(), ".csv", directory);
+    File outputDatasetFile = File.createTempFile("writerFromRule", ".csv", directory);
     writeFile(outputDatasetFile, outputDataset.getName(), "cvs-files");
 
     readerJar(jarFile, outputFile, listOfInputFile);
+
+    ResultVerification resultVerification = verification(outputDatasetFile, outputFile);
 
     outputFile.deleteOnExit();
     jarFile.deleteOnExit();
     listOfInputFile.forEach(File::deleteOnExit);
     outputDatasetFile.deleteOnExit();
 
+    return resultVerification;
+
+  }
+
+  @SneakyThrows
+  private ResultVerification verification(File expectedFile, File actualFile) {
+    List<String> expected = new ArrayList<>();
+    List<String> actual = new ArrayList<>();
+
+    try(BufferedReader bufferedReaderExpected = new BufferedReader(new FileReader(expectedFile));
+        BufferedReader bufferedReaderActual = new BufferedReader(new FileReader(actualFile))) {
+      while(bufferedReaderExpected.ready()) {
+        expected.add(bufferedReaderExpected.readLine());
+      }
+
+      while(bufferedReaderActual.ready()) {
+        actual.add(bufferedReaderActual.readLine());
+      }
+    }
+    ResultVerification result = new ResultVerification();
+    result.setExpected(expected);
+    result.setActual(actual);
+    result.setResult(check(expected,actual));
+    return result;
+  }
+
+  private boolean check(List<String> expected, List<String> actual) {
+    if(expected.size() != actual.size()) {
+      return false;
+    }
+    for(int i = 0; i < expected.size(); i++) {
+      if(!expected.get(i).equals(actual.get(i))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @SneakyThrows
@@ -98,5 +140,4 @@ public class JarServiceImpl implements JarService {
       outputStream.write(allBytes);
     }
   }
-
 }
