@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: automatic_verification
+    labels:
+        app: automatic_verification
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: automatic_verification
+    template:
+        metadata:
+            labels:
+                app: automatic_verification
+    spec:
+        containers:
+        - name: automatic_verification
+        image: automatic_verification_image    */здесь Жека скинет что надо/*
+        env:
+        ports:
+            - name: http
+            containerPort: 8099 */здесь Жека тоже скажет что надо/*
+        readinessProbe:
+            httpGet:
+                scheme: HTTPS
+                path: */здесь надо добавить/*
+                port: */здесь надо добавить/*
+            initialDelaySeconds: 10
+            periodSeconds: 5
+        livenessProbe:
+            exec:
+                command:
+                - */здесь надо добавить, например /bin/sh/  /*
+                - */здесь надо добавить, например  -c  /*
+                - */здесь надо добавить, например "/usr/bin/my-application-jobs --alive"  /*
+            initialDelaySeconds: 10
+            periodSeconds: 5
+        startupProbe:
+            initialDelaySeconds: 1
+                periodSeconds: 2
+                timeoutSeconds: 1
+                successThreshold: 1
+                failureThreshold: 1
+                exec:
+                    command:
+                    - */ здесь надо добавить, например  cat/*
+                    - */ здесь надо добавить, наприрмер  /etc/nginx/nginx.conf  /*
