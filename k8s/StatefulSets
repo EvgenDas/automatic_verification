@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: automatic_verification
+spec:
+  selector:
+    matchLabels:
+      app: automatic_verification
+  serviceName: "automatic_verification"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: automatic_verification
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: automatic_verification
+        image: automatic_verification_image
+        ports:
+        - containerPort: 8099
+        volumeMounts:
+        - name: automatic_verification
+          mountPath: /data/automatic_verification  // какой та путь
+        env:
+          - name: AUTO_VER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: automatic_verification-password
+                key: AUTO_VER_PASSWORD
+  volumeClaimTemplates:
+  - metadata:
+      name: automatic_verification
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "auto-verification"
+      resources:
+        requests:
+          storage: 5Gi
