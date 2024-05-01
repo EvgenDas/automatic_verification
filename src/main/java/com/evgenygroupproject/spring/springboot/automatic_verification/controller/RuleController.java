@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.SneakyThrows;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/api/rule")
 @Validate
+@Tag(name="RuleController", description="Класс для описания правил")
 public class RuleController {
 
   @Autowired
@@ -36,6 +41,10 @@ public class RuleController {
   private MinioClient minioClient;
 
   @GetMapping("/{id}")
+  @Operation(
+          summary="получение правила по Id",
+          description="Позволяет получить правило по его Id"
+  )
   public String getById(@PathVariable int id, Model model) {
     Optional<Rule> rule = ruleService.getById(id);
     if (rule.isPresent()) {
@@ -46,6 +55,10 @@ public class RuleController {
   }
 
   @GetMapping
+  @Operation(
+          summary="Получение правила по названию",
+          description = "Позволяет получить правило по названию"
+  )
   public String getRules(Model model) {
     Iterable<Rule> rules = ruleService.getAll();
     model.addAttribute("rules", rules);
@@ -53,9 +66,13 @@ public class RuleController {
   }
 
   @PostMapping
+  @Operation(
+          summary="Добавление правила",
+          description="Добавляет правило"
+  )
   public String addRule(@RequestParam String name,
-      @RequestParam("input_file") List<MultipartFile> inputFiles,
-      @RequestParam("output_file") MultipartFile outputFile) throws IOException {
+      @RequestParam("input_file") @NotEmpty List<MultipartFile> inputFiles,
+      @RequestParam("output_file") @NotEmpty MultipartFile outputFile) throws IOException {
 
     List<InputDataset> inputDatasets = inputFiles.stream()
         .map(el -> new InputDataset(java.util.UUID.randomUUID() + el.getOriginalFilename()))

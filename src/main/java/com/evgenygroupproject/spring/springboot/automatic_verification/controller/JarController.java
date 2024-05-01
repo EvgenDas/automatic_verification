@@ -12,6 +12,11 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import java.io.IOException;
 import java.io.InputStream;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.SneakyThrows;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/api/jar")
 @Validate
+@Tag(name="JarController", description="Класс для обработки jar-файлов")
 public class JarController {
 
   @Autowired
@@ -36,6 +42,10 @@ public class JarController {
   private MinioClient minioClient;
 
   @GetMapping
+  @Operation(
+          summary="страница для выбора правил",
+          description="Страница для выбора правила"
+  )
   public String pageForChoice(Model model) {
     Iterable<Rule> rules = ruleService.getAll();
     model.addAttribute("rules", rules);
@@ -43,8 +53,12 @@ public class JarController {
   }
 
   @PostMapping
-  public String processJar(@RequestParam("jar_file") MultipartFile jarFile,
-      @RequestParam("rule_id") int ruleId, Model model) throws IOException {
+  @Operation(
+          summary = "работа с jar-файлами",
+          description = "Работа с правилами, jar-файлами"
+  )
+  public String processJar(@RequestParam("jar_file") @NotEmpty MultipartFile jarFile,
+                           @RequestParam("rule_id") @Min(0) int ruleId, Model model) throws IOException {
 
     createBucket();
     Jar jar = new Jar(java.util.UUID.randomUUID() + jarFile.getOriginalFilename(), ruleService.getById(ruleId).get());
