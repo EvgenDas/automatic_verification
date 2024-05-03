@@ -50,5 +50,5 @@ volumeClaimTemplates:
         resources:
           requests:
             storage: 10Gi
-  updateStrategy:
-    type: RollingUpdate
+updateStrategy:
+  type: RollingUpdate
