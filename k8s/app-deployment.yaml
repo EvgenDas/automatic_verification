@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: automatic-verification
+  namespace: verification
+  labels:
+    app.kubernetes.io/name: automatic-verification
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: automatic-verification
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: automatic-verification
+    spec:
+      containers:
+        - name: automatic-verification
+          image: evgendas/automatic-verification:1.0.2
+          ports:
+            - containerPort: 8092
+          env:
+            - name: DATASOURCE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: DATASOURCE_HOST
+                  name: env
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: HOST
+                  name: env
+            - name: LOCALHOST
+              valueFrom:
+                configMapKeyRef:
+                  key: LOCALHOST
+                  name: env
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DATABASE
+                  name: env
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: env
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USERNAME
+                  name: env
+            - name: MINIO_ACCESSKEY
+              valueFrom:
+                configMapKeyRef:
+                  key: MINIO_ACCESSKEY
+                  name: env
+            - name: MINIO_SECRETKEY
+              valueFrom:
+                configMapKeyRef:
+                  key: MINIO_SECRETKEY
+                  name: env
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: postgres
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://pg:5432/postgres
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+              value: org.hibernate.dialect.PostgresPlusDialect
