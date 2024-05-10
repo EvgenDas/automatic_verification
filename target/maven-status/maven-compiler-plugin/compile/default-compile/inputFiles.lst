@@ -1,0 +1,17 @@
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\repository\InputDatasetRepository.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\service\RuleService.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\repository\RuleRepository.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\controller\JarController.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\entity\OutputDataset.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\service\InputDatasetService.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\AutomaticVerificationApplication.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\service\impl\JarServiceImpl.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\entity\Rule.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\config\MinioConfig.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\entity\InputDataset.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\controller\RuleController.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\service\impl\RuleServiceImpl.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\repository\JarRepository.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\entity\Jar.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\service\JarService.java
+C:\Users\79533\IdeaProjects\automatic_verification\src\main\java\com\evgenygroupproject\spring\springboot\automatic_verification\service\impl\InputDatasetServiceImpl.java

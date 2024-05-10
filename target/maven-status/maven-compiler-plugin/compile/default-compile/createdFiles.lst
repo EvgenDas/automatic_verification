@@ -1,0 +1,17 @@
+com\evgenygroupproject\spring\springboot\automatic_verification\AutomaticVerificationApplication.class
+com\evgenygroupproject\spring\springboot\automatic_verification\entity\Jar.class
+com\evgenygroupproject\spring\springboot\automatic_verification\service\JarService.class
+com\evgenygroupproject\spring\springboot\automatic_verification\repository\InputDatasetRepository.class
+com\evgenygroupproject\spring\springboot\automatic_verification\controller\JarController.class
+com\evgenygroupproject\spring\springboot\automatic_verification\entity\InputDataset.class
+com\evgenygroupproject\spring\springboot\automatic_verification\controller\RuleController.class
+com\evgenygroupproject\spring\springboot\automatic_verification\repository\JarRepository.class
+com\evgenygroupproject\spring\springboot\automatic_verification\service\impl\JarServiceImpl.class
+com\evgenygroupproject\spring\springboot\automatic_verification\entity\Rule.class
+com\evgenygroupproject\spring\springboot\automatic_verification\service\impl\InputDatasetServiceImpl.class
+com\evgenygroupproject\spring\springboot\automatic_verification\config\MinioConfig.class
+com\evgenygroupproject\spring\springboot\automatic_verification\service\impl\RuleServiceImpl.class
+com\evgenygroupproject\spring\springboot\automatic_verification\service\RuleService.class
+com\evgenygroupproject\spring\springboot\automatic_verification\repository\RuleRepository.class
+com\evgenygroupproject\spring\springboot\automatic_verification\entity\OutputDataset.class
+com\evgenygroupproject\spring\springboot\automatic_verification\service\InputDatasetService.class
