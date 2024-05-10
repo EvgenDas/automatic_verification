@@ -52,7 +52,7 @@ public class RuleController {
     return "rules";
   }
 
-  @PostMapping("/addRule")
+  @PostMapping()
   public String addRule(@RequestParam String name,
       @RequestParam("input_file") List<MultipartFile> inputFiles,
       @RequestParam("output_file") MultipartFile outputFile) throws IOException {
