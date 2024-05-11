@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/rule")
 @Validate
 @Tag(name="RuleController", description="Класс для описания правил")
+@Slf4j
 public class RuleController {
 
   @Autowired
@@ -84,28 +86,37 @@ public class RuleController {
 
     ruleService.save(rule);
 
+    log.debug("Проверка создания бакета");
     createBucket();
     for(int i = 0; i < inputFiles.size(); i++) {
       saveFile(inputFiles.get(i).getInputStream(), inputDatasets.get(i).getName());
     }
     saveFile(outputFile.getInputStream(), outputDataset.getName());
 
-    return "redirect:/api/rule";
+    return "redirect:http://localhost:8888/automatic_verification/api/rule";
   }
 
 
   @SneakyThrows
   private void createBucket() {
-    boolean found = minioClient.bucketExists(BucketExistsArgs
-        .builder()
-        .bucket("cvs-files")
-        .build());
+    log.debug("проверка бакета");
+    boolean found = false;
+    try {
+      found = minioClient.bucketExists(BucketExistsArgs
+          .builder()
+          .bucket("cvs-files")
+          .build());
+    } catch (Exception e) {
+      log.error("Error when check bucket", e);
+    }
+    log.debug("создание создан");
     if (!found) {
       minioClient.makeBucket(MakeBucketArgs
           .builder()
           .bucket("cvs-files")
           .build());
     }
+    log.debug("бакет создан");
   }
 
   @SneakyThrows

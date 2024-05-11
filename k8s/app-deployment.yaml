@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: automatic-verification
-          image: evgendas/automatic-verification:1.0.2
+          image: evgendas/automatic-verification:1.0.8
           ports:
             - containerPort: 8092
           env:
@@ -30,11 +30,6 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: HOST
-                  name: env
-            - name: LOCALHOST
-              valueFrom:
-                configMapKeyRef:
-                  key: LOCALHOST
                   name: env
             - name: POSTGRES_DATABASE
               valueFrom:
@@ -51,16 +46,12 @@ spec:
                 configMapKeyRef:
                   key: POSTGRES_USERNAME
                   name: env
-            - name: MINIO_ACCESSKEY
-              valueFrom:
-                configMapKeyRef:
-                  key: MINIO_ACCESSKEY
-                  name: env
-            - name: MINIO_SECRETKEY
-              valueFrom:
-                configMapKeyRef:
-                  key: MINIO_SECRETKEY
-                  name: env
+            - name: MINIO_URL
+              value: "http://minio:9000"
+            - name: MINIO_ACCESS_KEY
+              value: "minioadmin"  # Adjust as necessary
+            - name: MINIO_SECRET_KEY
+              value: "minioadmin"  # Adjust as necessary
             - name: SPRING_DATASOURCE_PASSWORD
               value: postgres
             - name: SPRING_DATASOURCE_URL
