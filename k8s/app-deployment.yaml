@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: automatic-verification
-          image: evgendas/automatic-verification:1.0.8
+          image: evgendas/automatic-verification:1.0.20
           ports:
             - containerPort: 8092
           env:
