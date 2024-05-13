@@ -26,7 +26,7 @@ public class ApplicationConfig {
         )
         .oauth2Login(oauth2 -> oauth2
             .loginPage("/oauth2/authorization/github")
-            .defaultSuccessUrl("/main", true)
+            .defaultSuccessUrl("/api/rule", true)
         );
 
     return http.build();

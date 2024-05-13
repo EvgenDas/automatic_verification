@@ -93,7 +93,7 @@ public class RuleController {
     }
     saveFile(outputFile.getInputStream(), outputDataset.getName());
 
-    return "redirect:http://localhost:8888/automatic_verification/api/rule";
+    return "redirect:http://localhost/api/rule";
   }
 
 

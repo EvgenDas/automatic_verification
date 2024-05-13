@@ -2,12 +2,115 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
-  <title>Login Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Authorization</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #F5F5DC; /* Бежевый цвет */
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        color: #333;
+    }
+
+    .container {
+        position: relative;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.8); /* Прозрачный белый */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .btn {
+        background-color: #fff;
+        color: #4CAF50;
+        border: none;
+        padding: 15px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+
+    .btn:active {
+        background-color: #388E3C;
+    }
+
+    .square {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        opacity: 0.7;
+        z-index: 0;
+    }
+
+    .square.green {
+        background-color: #4CAF50;
+    }
+
+    .square.orange {
+        background-color: #FF9800;
+    }
+
+    .square:nth-child(1) {
+        top: -40px;
+        left: -40px;
+    }
+
+    .square:nth-child(2) {
+        top: 100px;
+        left: -50px;
+    }
+
+    .square:nth-child(3) {
+        bottom: 50px;
+        right: -50px;
+    }
+
+    .square:nth-child(4) {
+        bottom: -40px;
+        right: -40px;
+    }
+
+    .square:nth-child(5) {
+        top: 50%;
+        transform: translateY(-50%);
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+  </style>
 </head>
 <body>
-<h2>Welcome to GitHub Auth Example</h2>
-<div>
-  <a href="/oauth2/authorization/github">Login with GitHub</a>
+<div class="square green"></div>
+<div class="square orange"></div>
+<div class="square green"></div>
+<div class="square orange"></div>
+<div class="container">
+  <h1>Авторизация через GitHub</h1>
+  <p>Для входа на наш сайт, пожалуйста, авторизуйтесь через GitHub.</p>
+  <a href="/oauth2/authorization/github" class="btn">Войти через GitHub</a>
 </div>
 </body>
 </html>
