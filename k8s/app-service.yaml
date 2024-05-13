@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: automatic-verification
+  namespace: verification
+  labels:
+    app.kubernetes.io/name: automatic-verification
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8092
+  selector:
+    app.kubernetes.io/name: automatic-verification

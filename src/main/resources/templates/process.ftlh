@@ -108,8 +108,8 @@ margin-bottom: 1em;
 <body style="background-color: #1c1e1c1f"></body>
 
 <div id="left">
-<p><a href="http://localhost:8091/automatic_verification/api/rule" class="button1">Задание правил проверки</a></p>
-<p><a href="http://localhost:8091/automatic_verification/api/jar" class="button">Загрузка jar-файла</a></p>
+<p><a href="http://localhost:8888/automatic_verification/api/rule" class="button1">Задание правил проверки</a></p>
+<p><a href="http://localhost:8888/automatic_verification/api/jar" class="button">Загрузка jar-файла</a></p>
 </div>
 
 <div id="right">

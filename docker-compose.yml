@@ -15,9 +15,9 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER=bestuser
-      - POSTGRES_PASSWORD=bestuser
-      - POSTGRES_DB=my_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -37,13 +37,13 @@ services:
 
 
   API:
-    image: 'automatic_verification-api-docker.jar'
+    image: evgendas/automatic-verification:1.0.1
     ports:
       - '8092:8092'
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/my_db
-      - SPRING_DATASOURCE_USERNAME=bestuser
-      - SPRING_DATASOURCE_PASSWORD=bestuser
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgresPlusDialect
     depends_on:

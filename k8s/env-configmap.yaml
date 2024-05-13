@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  DATASOURCE_HOST: jdbc:postgresql://pg:5432/postgres
+  HOST: postgres
+  POSTGRES_DATABASE: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USERNAME: postgres
+  MINIO_HOST: minio
+  MINIO_ACCESSKEY: minioadmin
+  MINIO_SECRETKEY: minioadmin
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: app-env
+  name: env
+  namespace: verification

@@ -12,7 +12,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/api/rule")
 @Validate
+@Tag(name="RuleController", description="Класс для описания правил")
+@Slf4j
 public class RuleController {
 
   @Autowired
@@ -36,6 +43,10 @@ public class RuleController {
   private MinioClient minioClient;
 
   @GetMapping("/{id}")
+  @Operation(
+          summary="получение правила по Id",
+          description="Позволяет получить правило по его Id"
+  )
   public String getById(@PathVariable int id, Model model) {
     Optional<Rule> rule = ruleService.getById(id);
     if (rule.isPresent()) {
@@ -46,16 +57,24 @@ public class RuleController {
   }
 
   @GetMapping
+  @Operation(
+          summary="Получение правила по названию",
+          description = "Позволяет получить правило по названию"
+  )
   public String getRules(Model model) {
     Iterable<Rule> rules = ruleService.getAll();
     model.addAttribute("rules", rules);
     return "rules";
   }
 
-  @PostMapping()
+  @PostMapping
+  @Operation(
+          summary="Добавление правила",
+          description="Добавляет правило"
+  )
   public String addRule(@RequestParam String name,
-      @RequestParam("input_file") List<MultipartFile> inputFiles,
-      @RequestParam("output_file") MultipartFile outputFile) throws IOException {
+      @RequestParam("input_file") @NotEmpty List<MultipartFile> inputFiles,
+      @RequestParam("output_file") @NotEmpty MultipartFile outputFile) throws IOException {
 
     List<InputDataset> inputDatasets = inputFiles.stream()
         .map(el -> new InputDataset(java.util.UUID.randomUUID() + el.getOriginalFilename()))
@@ -67,28 +86,37 @@ public class RuleController {
 
     ruleService.save(rule);
 
+    log.debug("Проверка создания бакета");
     createBucket();
     for(int i = 0; i < inputFiles.size(); i++) {
       saveFile(inputFiles.get(i).getInputStream(), inputDatasets.get(i).getName());
     }
     saveFile(outputFile.getInputStream(), outputDataset.getName());
 
-    return "redirect:/api/rule";
+    return "redirect:http://localhost:8888/automatic_verification/api/rule";
   }
 
 
   @SneakyThrows
   private void createBucket() {
-    boolean found = minioClient.bucketExists(BucketExistsArgs
-        .builder()
-        .bucket("cvs-files")
-        .build());
+    log.debug("проверка бакета");
+    boolean found = false;
+    try {
+      found = minioClient.bucketExists(BucketExistsArgs
+          .builder()
+          .bucket("cvs-files")
+          .build());
+    } catch (Exception e) {
+      log.error("Error when check bucket", e);
+    }
+    log.debug("создание создан");
     if (!found) {
       minioClient.makeBucket(MakeBucketArgs
           .builder()
           .bucket("cvs-files")
           .build());
     }
+    log.debug("бакет создан");
   }
 
   @SneakyThrows
