@@ -4,13 +4,15 @@ metadata:
   name: automatic-verification
   namespace: verification
   annotations:
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+#    nginx.ingress.kubernetes.io/enable-cors: "true"
+#  nginx.ingress.kubernetes.io/affinity: "cookie"
+#  nginx.ingress.kubernetes.io/session-cookie-name: "route"
+#  nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
 spec:
   rules:
     - http:
         paths:
-          - path: /automatic_verification
+          - path: /
             pathType: Prefix
             backend:
               service:

@@ -114,7 +114,7 @@
         <body style="background-color: #1c1e1c1f"></body>
         <div id="left">
             <p><a class="button1">Задание правил проверки</a></p>
-            <p><a href="http://localhost:8888/automatic_verification/api/jar" class="button">Загрузка jar-файла</a></p>
+            <p><a href="http://localhost/api/jar" class="button">Загрузка jar-файла</a></p>
         </div>
         <div id="right">
             <thread>

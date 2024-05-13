@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 				title = "Automatic verification",
 				description = "Automatic verification", version = "2.0.0"
 		),
-		servers = { @Server(url = "http://localhost:8888")})
+		servers = { @Server(url = "http://localhost")})
 @SpringBootApplication
 public class AutomaticVerificationApplication {
 
