@@ -1,0 +1,77 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: redis
+#  labels:
+#    app.kubernetes.io/name: redis
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app.kubernetes.io/name: redis
+#  template:
+#    metadata:
+#      labels:
+#        app.kubernetes.io/name: redis
+#    spec:
+#      containers:
+#        - args:
+#              - redis-server
+#              - --save
+#              - "20"
+#              - "1"
+#              - --loglevel
+#              - warning
+#              - --requirepass
+#              - Z2Zsa2pnbGZk
+#          name: redis
+#          image: redis:7.2-rc-alpine
+#          ports:
+#            - containerPort: 6379
+#              name: redis
+#
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: verification
+  name: redis
+  labels:
+    app.kubernetes.io/name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis
+    spec:
+      containers:
+        - name: redis
+          args:
+            - redis-server
+            - --save
+            - "20"
+            - "1"
+            - --loglevel
+            - warning
+            - --requirepass
+            - Z2Zsa2pnbGZk
+          image: redis:7.2-rc-alpine
+          ports:
+            - containerPort: 6379
+              name: redis
+          volumeMounts:
+            - name: data
+              mountPath: /evgendas/redis
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "500Mi"

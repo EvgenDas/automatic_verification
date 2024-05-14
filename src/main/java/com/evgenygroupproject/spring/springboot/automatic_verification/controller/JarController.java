@@ -1,6 +1,5 @@
 package com.evgenygroupproject.spring.springboot.automatic_verification.controller;
 
-import com.evgenygroupproject.spring.springboot.automatic_verification.config.MinioConfig;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.Jar;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.ResultVerification;
 import com.evgenygroupproject.spring.springboot.automatic_verification.entity.Rule;

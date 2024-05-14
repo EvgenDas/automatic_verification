@@ -101,7 +101,7 @@ class RuleControllerTest {
         multipartFileList.add(input1);
         multipartFileList.add(input2);
 
-        assertEquals("redirect:/api/rule", ruleController.addRule(name, multipartFileList, output));
+        assertEquals("redirect:http://localhost/api/rule", ruleController.addRule(name, multipartFileList, output));
         verify(ruleService, times(1)).save(any());
 
 
